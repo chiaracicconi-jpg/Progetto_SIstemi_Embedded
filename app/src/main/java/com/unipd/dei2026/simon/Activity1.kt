@@ -6,30 +6,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonDefaults.shape
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.remember
@@ -38,14 +29,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 
 
 @Composable
-fun Activity1( onButtonClicked: ()-> Unit){
+fun Activity1( onButtonClicked: (String)-> Unit){
     var t by rememberSaveable {mutableStateOf("")}
+    var c by rememberSaveable {mutableStateOf(0)}
+    var playedMatches by rememberSaveable {mutableStateOf("")}
     val orientation = LocalConfiguration.current.orientation
     Column(
         modifier = Modifier
@@ -53,7 +46,7 @@ fun Activity1( onButtonClicked: ()-> Unit){
             .padding(18.dp),
         horizontalAlignment =Alignment.CenterHorizontally
     ) {
-        CreateRows(text = t, textUpdated = { t = it }, oriented = orientation)
+        CreateRows(text = t, textUpdated = { t = it }, oriented = orientation, counting=c, countUpdate={c=it})
     }
     Column(
         modifier = Modifier
@@ -72,7 +65,6 @@ fun Activity1( onButtonClicked: ()-> Unit){
             text = t,
             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
             softWrap=true
-
         )
 
 
@@ -80,8 +72,8 @@ fun Activity1( onButtonClicked: ()-> Unit){
         Row {
             Button(
                 onClick = {
-                    val cancel = if (t.isNotEmpty() == true) "" else ""
-                    t = cancel
+                    t=""
+                    c=0
                 },
                 shape = RectangleShape
             ) {
@@ -89,38 +81,47 @@ fun Activity1( onButtonClicked: ()-> Unit){
             }
             Spacer(modifier = Modifier.width(20.dp))
             Button(
-                onClick = onButtonClicked,
+                onClick = {
+                    val sequence= "$c.  "+ t
+                    playedMatches=if (playedMatches.isEmpty()) {
+                            sequence
+                    }else {"$playedMatches|$sequence"}
+                        onButtonClicked(playedMatches)
+
+                        t=""
+                        c=0
+                    },
                 shape = RectangleShape
+
             ) {
                 Text(text = stringResource(R.string.endOf_game))
             }
+            Spacer(modifier = Modifier.height(100.dp))
         }
 
     }
-
-
 }
 
 
 
 @Composable
-fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int){
+fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int, counting:Int, countUpdate:(Int)->Unit){
     if (oriented==Configuration.ORIENTATION_PORTRAIT){
         Column(
             horizontalAlignment =Alignment.CenterHorizontally
         ){
             Spacer(modifier=Modifier.height(50.dp))
             Row  {
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.red, char='R')
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.magenta, char='M')
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.red, char='R', countButton=counting, countChanged=countUpdate )
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.magenta, char='M', countButton=counting, countChanged=countUpdate)
             }
             Row  {
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.yellow, char='Y')
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.green, char='G')
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.yellow, char='Y', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.green, char='G', countButton=counting, countChanged=countUpdate)
             }
             Row  {
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.cyan, char='C')
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.blue, char='B')
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.cyan, char='C', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.blue, char='B', countButton=counting, countChanged=countUpdate)
             }
         }
     }
@@ -131,20 +132,20 @@ fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int){
             Row (
                 modifier = Modifier.fillMaxWidth()
             ){
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.red, char='R')
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.magenta, char='M')
+                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.red, char='R', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.magenta, char='M', countButton=counting, countChanged=countUpdate)
             }
             Row(
                 modifier = Modifier.fillMaxWidth()
             ){
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.yellow, char='Y')
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.green, char='G')
+                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.yellow, char='Y', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.green, char='G', countButton=counting, countChanged=countUpdate)
             }
             Row(
                 modifier = Modifier.fillMaxWidth()
             ){
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.cyan, char='C')
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.blue, char='B')
+                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.cyan, char='C', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.blue, char='B', countButton=counting, countChanged=countUpdate)
             }
 
         }
@@ -156,12 +157,18 @@ fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int){
 fun ColoredButton(modifier:Modifier=Modifier,
                   char:Char, color:Int,
                   text:String,
-                  stringChanged:(String)-> Unit){
+                  stringChanged:(String)-> Unit,
+                  countButton:Int,
+                  countChanged:(Int)->Unit){
     Button(
         onClick = {
             val comma =if (text.isEmpty()) "" else ", "
             val textChanged=text+ comma+ char
-                 stringChanged(textChanged) },
+            val plusOne=countButton+1
+
+            stringChanged(textChanged)
+            countChanged(plusOne)
+                  },
         colors = ButtonDefaults.buttonColors(containerColor=colorResource(color)),
         modifier = modifier.padding(2.dp).width(155.dp).height(120.dp),
         shape= RoundedCornerShape(15.dp)
