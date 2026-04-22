@@ -10,8 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -31,7 +34,9 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 
 
 @Composable
@@ -43,7 +48,7 @@ fun Activity1( onButtonClicked: (String)-> Unit){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(18.dp),
+            .padding(10.dp),
         horizontalAlignment =Alignment.CenterHorizontally
     ) {
         CreateRows(text = t, textUpdated = { t = it }, oriented = orientation, counting=c, countUpdate={c=it})
@@ -61,10 +66,13 @@ fun Activity1( onButtonClicked: (String)-> Unit){
         }else{ Arrangement.Center}
     ) {
         Text(
-            modifier = Modifier.width(300.dp).background(colorResource(R.color.grey)),
+            modifier = Modifier.width(300.dp).background(colorResource(R.color.grey))
+                .heightIn(10.dp, 100.dp)
+                .verticalScroll(rememberScrollState()),
             text = t,
-            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-            softWrap=true
+            style = TextStyle(fontSize = 22.sp ,fontWeight = FontWeight.Bold),
+            softWrap=true,
+
         )
 
 
@@ -79,7 +87,7 @@ fun Activity1( onButtonClicked: (String)-> Unit){
             ) {
                 Text(text = stringResource(R.string.delete))
             }
-            Spacer(modifier = Modifier.width(20.dp))
+            Spacer(modifier = Modifier.width(30.dp))
             Button(
                 onClick = {
                     val sequence= "$c|  "+ t
@@ -132,20 +140,20 @@ fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int, countin
             Row (
                 modifier = Modifier.fillMaxWidth()
             ){
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.red, char='R', countButton=counting, countChanged=countUpdate)
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.magenta, char='M', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.red, char='R', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.magenta, char='M', countButton=counting, countChanged=countUpdate)
             }
             Row(
                 modifier = Modifier.fillMaxWidth()
             ){
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.yellow, char='Y', countButton=counting, countChanged=countUpdate)
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.green, char='G', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.yellow, char='Y', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.green, char='G', countButton=counting, countChanged=countUpdate)
             }
             Row(
                 modifier = Modifier.fillMaxWidth()
             ){
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.cyan, char='C', countButton=counting, countChanged=countUpdate)
-                ColoredButton(text=text,modifier=Modifier.height(90.dp).width(120.dp), stringChanged = textUpdated , color= R.color.blue, char='B', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.cyan, char='C', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.blue, char='B', countButton=counting, countChanged=countUpdate)
             }
 
         }
@@ -170,7 +178,7 @@ fun ColoredButton(modifier:Modifier=Modifier,
             countChanged(plusOne)
                   },
         colors = ButtonDefaults.buttonColors(containerColor=colorResource(color)),
-        modifier = modifier.padding(2.dp).width(155.dp).height(120.dp),
+        modifier = modifier.padding(2.dp).width(160.dp).height(130.dp),
         shape= RoundedCornerShape(15.dp)
     ) {}
 }
