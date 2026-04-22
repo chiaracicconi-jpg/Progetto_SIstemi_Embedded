@@ -82,7 +82,7 @@ fun Activity1( onButtonClicked: (String)-> Unit){
             Spacer(modifier = Modifier.width(20.dp))
             Button(
                 onClick = {
-                    val sequence= "$c.  "+ t
+                    val sequence= "$c|  "+ t
                     playedMatches=if (playedMatches.isEmpty()) {
                             sequence
                     }else {"$playedMatches|$sequence"}
