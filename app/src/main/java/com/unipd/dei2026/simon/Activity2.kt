@@ -11,6 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -29,41 +33,55 @@ fun Activity2(allMatches:String, onBackClicked:()->Unit, modifier: Modifier=Modi
     val matchesList = allMatches.split("|")
     val sequences = matchesList.filterIndexed { ind, _ -> ind % 2 != 0 }
     val counting = matchesList.filterIndexed { ind, _ -> ind % 2 == 0 }
-
-    Row(modifier=Modifier.fillMaxSize().padding(10.dp)){
-
-        LazyColumn(modifier = Modifier.weight(0.1f)) {
-            items(counting) { count ->
-                Text(
-                    text = count,
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.Medium
-                    ),
-                    color = colorResource(R.color.white),
-                    maxLines = 1,
-                )
-
-            }
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Absolute.Right
+        ) {
+            Text(
+                text = stringResource(R.string.played),
+                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Thin),
+                color = colorResource(R.color.white),
+                maxLines = 1
+            )
         }
 
-        LazyColumn(modifier = Modifier.weight(0.9f)) {
-            items(sequences) { sequence ->
-                Text(
-                    text = sequence,
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.Medium
-                    ),
-                    color = colorResource(R.color.light),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
 
+        Row(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
+
+            LazyColumn(modifier = Modifier.weight(0.1f)) {
+                items(counting) { count ->
+                    Text(
+                        text = count,
+                        style = TextStyle(
+                            fontSize = 22.sp,
+                            fontFamily = FontFamily.Serif,
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = colorResource(R.color.white),
+                        maxLines = 1,
+                    )
+
+                }
             }
 
+            LazyColumn(modifier = Modifier.weight(0.9f)) {
+                items(sequences) { sequence ->
+                    Text(
+                        text = sequence,
+                        style = TextStyle(
+                            fontSize = 22.sp,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = colorResource(R.color.light),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                }
+
+            }
         }
     }
 }
