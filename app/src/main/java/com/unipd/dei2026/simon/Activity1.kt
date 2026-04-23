@@ -1,8 +1,10 @@
 package com.unipd.dei2026.simon
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +49,15 @@ fun Activity1( onButtonClicked: (String)-> Unit){
     var c by rememberSaveable {mutableStateOf(0)}
     var playedMatches by rememberSaveable {mutableStateOf("")}
     val orientation = LocalConfiguration.current.orientation
+    Box(modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center ) {
+        Image(
+            painter = painterResource(R.drawable.simongame1),
+            contentDescription = null,
+            modifier = Modifier.size(170.dp),
+            alpha = 0.28f,
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextFieldDefaults.Container
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -42,8 +44,16 @@ fun Activity2(allMatches:String, onBackClicked:()->Unit, modifier: Modifier=Modi
     val matchesList = allMatches.split("|")
     val sequences = matchesList.filterIndexed { ind, _ -> ind % 2 != 0 }
     val counting = matchesList.filterIndexed { ind, _ -> ind % 2 == 0 }
-    Box(modifier = Modifier.fillMaxSize()) {
-
+    Box(modifier = Modifier.fillMaxSize(),
+       contentAlignment = Alignment.Center ) {
+        Image(
+            painter = painterResource(R.drawable.simongame1),
+            contentDescription = null,
+            modifier = Modifier.size(170.dp),
+            alpha = 0.28f,
+        )
+    }
+    Column(modifier= Modifier.fillMaxSize()){
         Row(
             modifier = Modifier.fillMaxWidth().padding(12.dp),
             horizontalArrangement = Arrangement.Absolute.Right
