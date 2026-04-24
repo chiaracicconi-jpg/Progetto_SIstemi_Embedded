@@ -35,15 +35,15 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun Activity2(allMatches:String) {
     //Definisco 3 variabili utili all'interno del codice
-        //matchesList:List<String> -> contiene una lista di stringhe ottenuta tramite la funzione split
-        //                            viene usata nella definizione delle due variabili successive sequences, counting
-        //sequences:List<String> -> contiene una lista di stringhe che corrispondono alle sequenze di ciascuna partita giocata
-        //                          viene usata dalla funzione items di LazyColumn per inserire a ogni partita una nuova sequenza
-        //                          creata dalla funzione filterIndex che "setaccia" la lista matchesList per salvare nella variabile sequences
+        //matchesList:List<String> -> contiene una lista di stringhe ottenuta tramite la funzione split del parametro allMatches (passato da Activity1);
+        //                            viene usata per la definizione delle due variabili successive sequences, counting
+        //sequences:List<String> -> contiene una lista di stringhe che corrispondono alle sequenze di ciascuna partita giocata;
+        //                          viene usata dalla funzione items di LazyColumn per inserire a ogni partita una nuova sequenza;
+        //                          è creata dalla funzione filterIndex che "setaccia" la lista matchesList per salvare nella variabile sequences
         //                          quegli elementi della lista che hanno indice dispari
-        //counting:List<String> -> contiene una lista di stringhe che corrispondono al conteggio dei bottoni premuti in ciascuna partita giocata
-        //                          viene usata dalla funzione items di LazyColumn per inserire a ogni partita un nuovo conteggio
-        //                          creata dalla funzione filterIndex che "setaccia" la lista matchesList per salvare nella variabile counting
+        //counting:List<String> -> contiene una lista di stringhe che corrispondono al conteggio dei bottoni premuti in ciascuna partita giocata;
+        //                          viene usata dalla funzione items di LazyColumn per inserire a ogni partita un nuovo conteggio;
+        //                          è creata dalla funzione filterIndex che "setaccia" la lista matchesList per salvare nella variabile counting
         //                          quegli elementi della lista che hanno indice pari
 
     val matchesList = allMatches.split("|")
@@ -62,6 +62,7 @@ fun Activity2(allMatches:String) {
             alpha = 0.28f,
         )
     }
+    //Uso una classe Column per creare un contenitore in cui inserire la stringa "Played Games"
     Column(modifier= Modifier.fillMaxSize()){
         Row(
             modifier = Modifier.fillMaxWidth().padding(12.dp),
@@ -75,11 +76,11 @@ fun Activity2(allMatches:String) {
             )
         }
 
-
+        //Uso una classe Row come contenitore in cui inserire le stringhe di testo corrispondenti a ciascuna partita giocata
         Row(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
 
-            //Inserisco glie elementi corrispondenti a ciascuna partita nel contenitore a scorrimento verticale, Lazy Column
-            //Permette di mostrare tutta la cronologia delle partite giocate in modo fluido
+            //Inserisco gli elementi corrispondenti a ciascuna partita nel contenitore a scorrimento verticale,
+            // Lazy Column permette di mostrare tutta la cronologia delle partite giocate in modo fluido
             LazyColumn(modifier = Modifier.weight(0.15f)) {
                 items(counting) { count ->
                     Text(
@@ -101,8 +102,8 @@ fun Activity2(allMatches:String) {
             LazyColumn(modifier = Modifier.weight(0.98f)) {
                 items(sequences) { sequence ->
 
-                    //Uso una funzione builder per creare una stringa speciale AnnotadedString
-                    //con cui posso fare modifiche a parti diverse di un testo
+                    //Uso una funzione builder per creare una stringa speciale AnnotadedString contenuta nella variabile
+                    //textSeq, con cui posso fare modifiche a parti diverse di un testo
                     val textSeq = buildAnnotatedString {
                         //uso la funzione forEach che mi permette di "scannerizzare" ogni singolo carattere di testo
                         sequence.forEach { char ->
@@ -119,7 +120,7 @@ fun Activity2(allMatches:String) {
 
                             //con withStyle-> unisco lo stile al testo
                             //in SpanStyle-> sono contenute le informazioni grafiche
-                            //con append-> aggiungo i caratteri alla stringa
+                            //con append-> aggiungo i caratteri alla singola stringa
                             withStyle(style = SpanStyle(color=charColor)) {
                                 append(char)
                             }
@@ -136,9 +137,8 @@ fun Activity2(allMatches:String) {
                             fontWeight = FontWeight.Medium
                         ),
                         maxLines = 1,
-                        //uso il parametro successivo per troncare
-                        // la stringa quando raggiunge il bordo dello schermo
-                        //e per aggiungere ... alla fine della sequenza
+                        //uso il parametro successivo per troncare la stringa quando raggiunge il bordo dello schermo
+                        //e per aggiungere i tre puntini di sospensione (...) alla fine della sequenza
                         overflow = TextOverflow.Ellipsis
                     )
 

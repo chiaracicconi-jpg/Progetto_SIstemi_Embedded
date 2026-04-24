@@ -35,10 +35,10 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(modifier = Modifier.fillMaxSize()
 
-                                    // nel metodo  verticalGradient() creo la lista contenti i colori che andrò a sfumare(viola_chiaro, viola)
+                                    // nel metodo  verticalGradient() creo la lista contenente i colori che andrò a sfumare(viola_chiaro, viola)
                                     .background(brush = Brush.verticalGradient(colors=listOf(Color(0xFF7B50A4), Color(0xF32E1745)))),
 
-                        //imposto lo sfondo trasparente, altrimenti otterrò uno sfondo bianco
+                        //imposto lo sfondo trasparente, altrimenti otterrò uno sfondo bianco di default
                         containerColor = Color.Transparent) { innerPadding ->
 
                     NavHost(
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                         composable("activity1") {
                             Activity1(
 
-                                // definisco la funzione di callback per il composable Activity1, onButtonClicked
+                                // definisco la funzione di callback per il composable Activity1, onButtonClicked.
                                 //onButtonClicked passa come parametro una stringa contente l'elenco delle partite giocate (gestito in Activity2)
                                 // Importo la classe Uri dalla libreria Android (import android.net.Uri) che gestisce l'utilizzo dei caratteri non sicuri
                                 //nella stringa che le viene passata (playedMatches), che contiene il carattere"|".

@@ -46,20 +46,20 @@ import androidx.compose.ui.text.font.FontWeight
 fun Activity1( onButtonClicked: (String)-> Unit){
 
     //Definisco 4 variabili utili all'interno del codice
-        // t: String -> contiene la sequenza corrente di valori corrispondenti ai pulsanti premuti (es: R, M, Y, G, C, B)
-        //              la stringa termina dopo aver premuto uno dei due pulsanti: Cancella o Fine Partita
+        // t: String -> contiene la sequenza corrente di valori corrispondenti ai pulsanti premuti (es: R, M, Y, G, C, B);
+        //              la stringa termina dopo aver premuto uno dei due pulsanti: Cancella o Fine Partita;
         //              Cancella: tutti i valori vengono persi, t viene reinizializzata a t=""
         //              Fine Partita: tutti i valori vengono salvati nella stringa playedMatches, t viene reinizializzata a t=""
         // c:Int -> contiene il numero di pulsanti colorati premuti (quando non viene premuto nessun pulsante c=0)
         //              il conteggio termina dopo aver premuto uno dei due pulsanti: Cancella o Fine Partita
         //              Cancella: tutti i valori vengono persi, c viene reinizializzato a c=0
         //              Fine Partita: tutti i valori vengono salvati nella stringa playedMatches, c viene reinizializzato a c=0
-        // orientation: Int ->  realizzata sulla base del codice dell'applicazione ManageOrientation (Composable)
+        // orientation: Int ->  realizzata sulla base del codice dell'applicazione ManageOrientation (Composable);
         //                      in base alla modalità in cui si trova il telefono, Landscape o Portrait, cambia il layout
-        // playedMatches: String -> contiene tutte le sequenze relative alle partite giocate (c-t)
-        //                          è il parametro che viene passato dalla funzione onButtonClicked alla seconda schermata
-        //                          contiene "|" come parametro divisore tra una sequenza (1 partita) e un'altra
-        //                          non viene reinizializzato al click dei pulsanti Cancella o Fine Partita, ma quando termina l'applicazione
+        // playedMatches: String -> contiene tutte le sequenze relative alle partite giocate (c-t);
+        //                          è il parametro che viene passato dalla funzione onButtonClicked alla seconda schermata;
+        //                          contiene "|" come parametro divisore tra una sequenza (1 partita) e un'altra;
+        //                          non viene reinizializzato al click dei pulsanti Cancella o Fine Partita, ma una volta terminata l'applicazione
 
 
     var t by rememberSaveable {mutableStateOf("")}
@@ -76,7 +76,7 @@ fun Activity1( onButtonClicked: (String)-> Unit){
             painter = painterResource(R.drawable.simongame1),
             contentDescription = null,
             modifier = Modifier.size(170.dp),
-            //uso l'istruzione alpha per rendere opaco il disegno in background
+            //uso l'istruzione alpha=Float per rendere opaco il disegno in background
             alpha = 0.28f,
         )
     }
@@ -98,8 +98,8 @@ fun Activity1( onButtonClicked: (String)-> Unit){
             .padding(18.dp),
 
         //sfrutto la variabile orientation per definire le condizioni in cui collocare la stringa di testo e i due pulsanti
-        // modalità Portrait -> sono centrati in basso
-        // modalità Landscape-> sono centrati a destra
+        // modalità Portrait -> sono centrati orizzontalmnete e spostati in basso;
+        // modalità Landscape-> sono centrati verticalmente e spostati a destra;
         horizontalAlignment = if (orientation==Configuration.ORIENTATION_PORTRAIT){
             Alignment.CenterHorizontally }
             else{ Alignment.End
@@ -129,7 +129,7 @@ fun Activity1( onButtonClicked: (String)-> Unit){
         Row {
             Button(
                 onClick = {
-                    //funzionalità della classe Button:
+                    //questa funzionalità della classe Button,
                     //inizializza i valori della stringa e del conteggio al Click
                     t=""
                     c=0
@@ -145,15 +145,15 @@ fun Activity1( onButtonClicked: (String)-> Unit){
             Spacer(modifier = Modifier.width(30.dp))
 
             //nel Button di Fine Partita vado a salvare, aggiungendole in coda, le sequenze corrispondenti a ciascuna partita
-            // tra una sequenza e l'altra inserisco un separatore "|"
+            // tra una sequenza e l'altra inserisco un separatore "|";
             // "|" mi servirà nella schermata 2 per separare le singole sequenze
             Button(
                 onClick = {
-                    //converto la variabile c: Int in String
-                    // inserisco "|" anche tra il conteggio e l'elenco
-                    //imposto le condizioni per le sequenze da aggiungere alla stringa complessiva
-                    // se playedMatches è vuota, diventa la sequenza corrente
-                    // se playedMatches non è vuota aggiungo in coda la sequenza corrente
+                    //converto la variabile c: Int in String;
+                    // inserisco "|" anche tra il conteggio e l'elenco;
+                    //imposto le condizioni per le sequenze da aggiungere alla stringa complessiva:
+                    // se playedMatches è vuota, diventa la sequenza corrente,
+                    // se playedMatches non è vuota aggiungo in coda la sequenza corrente;
                     // azzero il conteggio e la sequenza
                     val sequence= " $c |  "+ t
                     playedMatches=if (playedMatches.isEmpty()) {
@@ -181,11 +181,11 @@ fun Activity1( onButtonClicked: (String)-> Unit){
 
 
 
-//creo una funzione compostable CreateRows che mi crea, in una colonna, 3 righe in cui inserire i bottoni
-//inserisco due disposizioni a seconda della modalità Landscape o Portrait
+//creo una funzione compostable CreateRows che mi crea, in una colonna, 3 righe in cui inserire i bottoni;
+//inserisco due disposizioni a seconda della modalità Landscape o Portrait:
 //Portrait: i bottoni sono in alto al centro dello schermo
-//Landscape: i bottoni sono a sinistra dello schermo (viene cambiata
-//la struttura dei bottoni viene definita nella funzione ColoredButton
+//Landscape: i bottoni sono a sinistra dello schermo (viene cambiata la struttura dei bottoni);
+//la struttura e le caratteristiche di ciascun bottone sono definite nella funzione ColoredButton
 @Composable
 fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int, counting:Int, countUpdate:(Int)->Unit){
     if (oriented==Configuration.ORIENTATION_PORTRAIT){
@@ -236,8 +236,8 @@ fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int, countin
 }
 
 
-//Nella funzione ColoredButton viene definito il valore di default del modifier
-//in modifier vengoni impostati i margini, larghezza e altezza e la funzione shadow
+//Nella funzione ColoredButton viene definito il valore di default del modifier;
+//in modifier vengoni impostati i margini, larghezza e altezza e la funzione shadow utile
 //per impostare l'elevation, ovvero la distanza tra la superficie di un elemento e lo sfondo
 
 
@@ -250,7 +250,7 @@ fun ColoredButton(modifier:Modifier=Modifier,
                   countChanged:(Int)->Unit){
     Button(
         onClick = {
-            //al Click viene incrementato di 1 il punteggio e aggiornata la stringa di testo t
+            //al Click viene incrementato di 1 il conteggio e aggiornata la stringa di testo t
             val comma =if (text.isEmpty()) "" else ", "
             val textChanged=text+ comma+ char
             val plusOne=countButton+1
