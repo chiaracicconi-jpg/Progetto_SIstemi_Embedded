@@ -44,7 +44,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-
+import com.unipd.dei2026.simon.ui.theme.FontButtons
+import com.unipd.dei2026.simon.ui.theme.FontText
 
 
 @Composable
@@ -96,7 +97,7 @@ fun Activity1( onButtonClicked: (String)-> Unit){
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                //[commentato a partire dalla riga 130]
+                //[commentato a partire dalla riga 171]
                 CreateRows(
                     text = t,
                     textUpdated = { t = it },
@@ -115,7 +116,7 @@ fun Activity1( onButtonClicked: (String)-> Unit){
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.Center
             ) {
-                //[commentato a partire dalla riga 215]
+                //[commentato a partire dalla riga 257]
                 CreateStringButtons(
                     text = t,
                     textUpdate = { t = it },
@@ -265,6 +266,7 @@ fun CreateStringButtons(
     Column(
         modifier=Modifier.fillMaxSize(),
         horizontalAlignment=Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         val scrollState =rememberScrollState()
         LaunchedEffect(text) {
@@ -281,8 +283,7 @@ fun CreateStringButtons(
             color = colorResource(R.color.white),
             style = TextStyle(
                 fontSize = 25.sp,
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Bold
+                fontFamily = FontText
             ),
             //quando il testo arriva alla fine della riga va a capo automaticamente
             softWrap = true,
@@ -315,8 +316,7 @@ fun CreateStringButtons(
                     text = stringResource(R.string.delete),
                     style = TextStyle(
                         fontSize = 15.sp,
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.Medium
+                        fontFamily = FontButtons
                     )
                 )
             }
@@ -357,8 +357,7 @@ fun CreateStringButtons(
                     text = stringResource(R.string.endOf_game),
                     style = TextStyle(
                         fontSize = 15.sp,
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.Medium
+                        fontFamily = FontButtons
                     )
                 )
             }

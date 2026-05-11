@@ -5,6 +5,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.Font
+import com.unipd.dei2026.simon.R
+
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -15,6 +18,7 @@ val Typography = Typography(
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     )
+
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -32,3 +36,8 @@ val Typography = Typography(
     )
     */
 )
+val FontText=FontFamily(Font(R.font.list))
+val FontButtons= FontFamily(Font(R.font.delete_endgame))
+val FontMatches=FontFamily(Font(R.font.played_matches))
+val FontGame=FontFamily(Font(R.font.colors))
+val FontNumber=FontFamily(Font(R.font.numbers))

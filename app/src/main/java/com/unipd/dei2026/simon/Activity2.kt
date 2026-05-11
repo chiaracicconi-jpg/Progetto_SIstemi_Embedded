@@ -13,7 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
@@ -30,6 +32,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.unipd.dei2026.simon.ui.theme.FontGame
+import com.unipd.dei2026.simon.ui.theme.FontMatches
+import com.unipd.dei2026.simon.ui.theme.FontNumber
 
 
 @Composable
@@ -70,7 +75,7 @@ fun Activity2(allMatches:String) {
         ) {
             Text(
                 text = stringResource(R.string.played),
-                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Thin),
+                style = TextStyle(fontSize = 20.sp, fontFamily= FontMatches),
                 color = colorResource(R.color.white),
                 maxLines = 1
             )
@@ -81,16 +86,15 @@ fun Activity2(allMatches:String) {
 
             //Inserisco gli elementi corrispondenti a ciascuna partita nel contenitore a scorrimento verticale,
             // Lazy Column permette di mostrare tutta la cronologia delle partite giocate in modo fluido
-            LazyColumn(modifier = Modifier.weight(0.15f)) {
+            LazyColumn(modifier = Modifier.weight(0.25f)) {
                 items(counting) { count ->
                     Text(
-                        modifier=Modifier.padding(2.dp)
+                        modifier=Modifier.padding(4.dp)
                             .background(colorResource(R.color.light_white), shape = RoundedCornerShape(4.dp)),
                         text = count,
                         style = TextStyle(
-                            fontSize = 22.sp,
-                            fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Bold
+                            fontSize = 30.sp,
+                            fontFamily = FontNumber
                         ),
                         color = colorResource(R.color.white),
                         maxLines = 1,
@@ -132,9 +136,8 @@ fun Activity2(allMatches:String) {
                         modifier = Modifier.padding(2.dp),
                         text = textSeq,
                         style = TextStyle(
-                            fontSize = 22.sp,
-                            fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Medium
+                            fontSize = 30.sp,
+                            fontFamily = FontGame
                         ),
                         maxLines = 1,
                         //uso il parametro successivo per troncare la stringa quando raggiunge il bordo dello schermo
