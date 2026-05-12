@@ -18,4 +18,6 @@
     <color name="cyan">#00E5FF</color>
     <color name="blue">#3D5AFE</color>
 
+    <color name="buttonBlue">#1976D2</color>
+
 </resources>

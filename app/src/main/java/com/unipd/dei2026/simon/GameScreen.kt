@@ -3,11 +3,7 @@ package com.unipd.dei2026.simon
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.foundation.gestures.DraggableState
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.colorResource
@@ -42,14 +39,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import com.unipd.dei2026.simon.ui.theme.FontButtons
 import com.unipd.dei2026.simon.ui.theme.FontText
 
 
 @Composable
-fun Activity1( onButtonClicked: (String)-> Unit){
+fun GameScreen( onButtonClicked: (String)-> Unit){
 
     //Definisco 4 variabili utili all'interno del codice
     // t: String -> contiene la sequenza corrente di valori corrispondenti ai pulsanti premuti (es: R, M, Y, G, C, B);
@@ -110,8 +105,8 @@ fun Activity1( onButtonClicked: (String)-> Unit){
             // modalità Landscape-> sono centrati verticalmente e spostati a destra;
             Row(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(18.dp),
+                    .fillMaxWidth()
+                    .padding(10.dp),
 
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.Center
@@ -133,7 +128,7 @@ fun Activity1( onButtonClicked: (String)-> Unit){
             .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Column(modifier=Modifier.fillMaxHeight().weight(1f),
+            Column(modifier=Modifier.fillMaxHeight().weight(0.5f).padding(10.dp),
                 verticalArrangement = Arrangement.Center){
                 CreateRows(
                     text = t,
@@ -145,8 +140,8 @@ fun Activity1( onButtonClicked: (String)-> Unit){
             Column(
                 modifier=Modifier
                     .fillMaxHeight()
-                    .padding(30.dp)
-                    .weight(1f)
+                    .padding(15.dp)
+                    .weight(0.5f)
             ){
                 Spacer(modifier= Modifier.height(50.dp))
                 CreateStringButtons(
@@ -291,36 +286,72 @@ fun CreateStringButtons(
 
             )
 
-
-        Spacer(modifier = Modifier.height(35.dp))
         Row (
-            modifier= Modifier.fillMaxWidth(),
+            modifier= Modifier.fillMaxSize(),
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.SpaceEvenly
         ){
+            var  buttonEnabled by remember {mutableStateOf(true)}
+
             Button(
                 onClick = {
                     //questa funzionalità della classe Button,
-                    //inizializza i valori della stringa e del conteggio al Click
-                    val empty = ""
-                    textUpdate(empty)
-                    val zero = 0
-                    countUpdate(zero)
+                    //avvia al Click la partita e
+                    //StartGame()
+                    // viene disattivato il pulsante successivamente
+                    buttonEnabled=false
+
                 },
-                shape = RoundedCornerShape(6.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.light_white)),
+                enabled=buttonEnabled,
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    // Quando il pulsante è attivo ha il fondo bianco e la scritta viola scuro
+                    containerColor = colorResource(R.color.white),
+                    contentColor= colorResource(R.color.violet),
+                    // Quando il pulsante è disattivato ha fondo lilla e scritta bianca
+                    disabledContainerColor = colorResource(R.color.light_white),
+                    disabledContentColor = colorResource(R.color.white)
+
+                ),
                 border = BorderStroke(1.dp, colorResource(R.color.white)),
                 elevation = ButtonDefaults.buttonElevation(pressedElevation = 5.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.delete),
+                    text = stringResource(R.string.start),
                     style = TextStyle(
                         fontSize = 15.sp,
                         fontFamily = FontButtons
                     )
                 )
             }
-            Spacer(modifier = Modifier.width(30.dp))
+
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Button(
+                onClick={},
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    // Quando il pulsante è attivo ha il fondo bianco e la scritta viola scuro
+                    containerColor = colorResource(R.color.buttonBlue),
+                    contentColor= colorResource(R.color.white),
+                    // Quando il pulsante è disattivato ha fondo lilla e scritta bianca
+                    disabledContainerColor = colorResource(R.color.light_white),
+                    disabledContentColor = colorResource(R.color.white)
+
+                ),
+                border = BorderStroke(1.dp, colorResource(R.color.white)),
+                elevation = ButtonDefaults.buttonElevation(pressedElevation = 5.dp)
+            ){
+                Text(
+                    text = stringResource(R.string.pause),
+                    style = TextStyle(
+                        fontSize = 15.sp,
+                        fontFamily = FontButtons
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.width(10.dp))
 
             //nel Button di Fine Partita vado a salvare, aggiungendole in coda, le sequenze corrispondenti a ciascuna partita
             // tra una sequenza e l'altra inserisco un separatore "|";
@@ -347,7 +378,7 @@ fun CreateStringButtons(
                     val zero2 = 0
                     countUpdate(zero2)
                 },
-                shape = RoundedCornerShape(6.dp),
+                shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.light_white)),
                 border = BorderStroke(1.dp, colorResource(R.color.white)),
                 elevation = ButtonDefaults.buttonElevation(pressedElevation = 5.dp)
@@ -361,7 +392,11 @@ fun CreateStringButtons(
                     )
                 )
             }
-            Spacer(modifier = Modifier.height(100.dp))
         }
     }
+}
+
+@Composable
+fun CreateSequenceGame(){
+
 }

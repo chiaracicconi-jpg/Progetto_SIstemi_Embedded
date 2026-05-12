@@ -39,5 +39,3 @@ val Typography = Typography(
 val FontText=FontFamily(Font(R.font.list))
 val FontButtons= FontFamily(Font(R.font.delete_endgame))
 val FontMatches=FontFamily(Font(R.font.played_matches))
-val FontGame=FontFamily(Font(R.font.colors))
-val FontNumber=FontFamily(Font(R.font.numbers))

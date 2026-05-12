@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Simon Game</string>
     <string name="endOf_game">End Game</string>
-    <string name="delete">Delete</string>
-    <string name="played">Played Games</string>
+    <string name="start">Start </string>
+    <string name="pause">Pause</string>
+    <string name="title">Simon Blink</string>
 </resources>

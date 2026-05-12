@@ -42,23 +42,23 @@ class MainActivity : ComponentActivity() {
                         containerColor = Color.Transparent) { innerPadding ->
 
                     NavHost(
-                        navController = navController, startDestination = "activity1",
+                        navController = navController, startDestination = "gameScreen",
                         modifier = Modifier.padding(innerPadding)
                     ) {
 
-                        composable("activity1") {
-                            Activity1(
+                        composable("gameScreen") {
+                            GameScreen(
 
-                                // definisco la funzione di callback per il composable Activity1, onButtonClicked.
-                                //onButtonClicked passa come parametro una stringa contente l'elenco delle partite giocate (gestito in Activity2)
+                                // definisco la funzione di callback per il composable GameScreen, onButtonClicked.
+                                //onButtonClicked passa come parametro una stringa contente l'elenco delle partite giocate (gestito in MatchHistory)
                                 // Importo la classe Uri dalla libreria Android (import android.net.Uri) che gestisce l'utilizzo dei caratteri non sicuri
                                 //nella stringa che le viene passata (playedMatches), che contiene il carattere"|".
-                                onButtonClicked={playedMatches-> navController.navigate("activity2/${Uri.encode(playedMatches)}")}
+                                onButtonClicked={playedMatches-> navController.navigate("matchHistory/${Uri.encode(playedMatches)}")}
                             )
                         }
-                        composable("activity2/{playedMatches}"){backStackEntry->
-                            //Passo il parametro da gestire in Activity2
-                            Activity2(Uri.decode(backStackEntry.arguments?.getString("playedMatches").orEmpty()))
+                        composable("matchHistory/{playedMatches}"){backStackEntry->
+                            //Passo il parametro da gestire in MatchHistory
+                            MatchHistory(Uri.decode(backStackEntry.arguments?.getString("playedMatches").orEmpty()))
                         }
                     }
                 }
