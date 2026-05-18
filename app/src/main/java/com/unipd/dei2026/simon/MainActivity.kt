@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                         containerColor = Color.Transparent) { innerPadding ->
 
                     NavHost(
-                        navController = navController, startDestination = "gameScreen",
+                        navController = navController, startDestination = "matchHistory",
                         modifier = Modifier.padding(innerPadding)
                     ) {
 

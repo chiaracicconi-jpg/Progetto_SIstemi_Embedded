@@ -4,6 +4,8 @@
     <string name="endOf_game">Fine Partita</string>
     <string name="start">Inizio Partita</string>
     <string name="pause">Pausa</string>
-    <string name="title">Simon Blink</string>
-
+    <string name="title1">Simon</string>
+    <string name="title2">Blink</string>
+    <string name="turn"> Ora è il tuo turno !</string>
+    <string name="resume">Riprendi </string>
 </resources>

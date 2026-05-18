@@ -18,6 +18,14 @@
     <color name="cyan">#00E5FF</color>
     <color name="blue">#3D5AFE</color>
 
+    <color name="glowRed">#FFCDD2</color>
+    <color name="glowMagenta">#F8BBD0</color>
+    <color name="glowYellow">#FFF9C4</color>
+    <color name="glowGreen">#DCEDC8</color>
+    <color name="glowCyan">#B2EBF2</color>
+    <color name="glowBlue">#C5CAE9</color>
+
     <color name="buttonBlue">#1976D2</color>
+    <color name="buttonRed">#E64571</color>
 
 </resources>

@@ -1,6 +1,6 @@
 package com.unipd.dei2026.simon
 
-
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -69,8 +70,7 @@ fun MatchHistory(allMatches:String) {
     //Uso una classe Column per creare un contenitore in cui inserire la stringa "Played Games"
     Column(modifier= Modifier.fillMaxSize()){
         Row(
-            modifier = Modifier.fillMaxWidth().padding(10.dp),
-            horizontalArrangement = Arrangement.Absolute.Center
+            modifier = Modifier.fillMaxWidth().padding(10.dp)
         ) {
             val rainbow= listOf(
                 colorResource(R.color.magenta),
@@ -82,20 +82,42 @@ fun MatchHistory(allMatches:String) {
                 colorResource(R.color.magenta)
             )
             val colorBack= Brush.horizontalGradient(rainbow)
+            Column(modifier=Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    modifier = Modifier.background(colorBack),
+                    text = stringResource(R.string.title1),
+                    style = TextStyle(
+                        fontSize = 60.sp,
+                        fontFamily = FontMatches,
+                        drawStyle = Stroke(
+                            miter = 10f,
+                            width = 6f,
+                            join =
+                                StrokeJoin.Round
+                        ),
+                    ),
+                    color = colorResource(R.color.white),
 
-            Text(
-                modifier= Modifier.background(colorBack),
-                text = stringResource(R.string.title),
-                style = TextStyle(fontSize = 38.sp,
-                    fontFamily= FontMatches,
-                    drawStyle= Stroke(
-                        miter=10f,
-                        width=5f,
-                        join=
-                            StrokeJoin.Round
-                    ),),
-                color = colorResource(R.color.white),
-            )
+                    )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    modifier = Modifier.background(colorBack),
+                    text = stringResource(R.string.title2),
+                    style = TextStyle(
+                        fontSize = 60.sp,
+                        fontFamily = FontMatches,
+                        drawStyle = Stroke(
+                            miter = 10f,
+                            width = 6f,
+                            join =
+                                StrokeJoin.Round
+                        ),
+                    ),
+                    color = colorResource(R.color.white),
+
+                    )
+            }
         }
 
         //Uso una classe Row come contenitore in cui inserire le stringhe di testo corrispondenti a ciascuna partita giocata

@@ -3,8 +3,8 @@ package com.unipd.dei2026.simon
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,10 +41,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import com.unipd.dei2026.simon.ui.theme.FontButtons
 import com.unipd.dei2026.simon.ui.theme.FontText
-
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
+import com.unipd.dei2026.simon.ui.theme.FontMatches
 
 @Composable
-fun GameScreen( onButtonClicked: (String)-> Unit){
+fun GameScreen( simonViewModel: SimonViewModel=viewModel(),
+    onButtonClicked: (String)-> Unit){
 
     //Definisco 4 variabili utili all'interno del codice
     // t: String -> contiene la sequenza corrente di valori corrispondenti ai pulsanti premuti (es: R, M, Y, G, C, B);
@@ -62,9 +69,7 @@ fun GameScreen( onButtonClicked: (String)-> Unit){
     //                          contiene "|" come parametro divisore tra una sequenza (1 partita) e un'altra;
     //                          non viene reinizializzato al click dei pulsanti Cancella o Fine Partita, ma una volta terminata l'applicazione
 
-
-    var t by rememberSaveable {mutableStateOf("")}
-    var c by rememberSaveable {mutableStateOf(0)}
+    val t =simonViewModel.t
     var playedMatches by rememberSaveable {mutableStateOf("")}
     val orientation = LocalConfiguration.current.orientation
 
@@ -87,7 +92,8 @@ fun GameScreen( onButtonClicked: (String)-> Unit){
         ) {
             //Uso una classe Row come contenitore in cui inserire i pulsanti colorati
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -95,10 +101,9 @@ fun GameScreen( onButtonClicked: (String)-> Unit){
                 //[commentato a partire dalla riga 171]
                 CreateRows(
                     text = t,
-                    textUpdated = { t = it },
+                    textUpdated = { simonViewModel.t = it },
                     oriented = orientation,
-                    counting = c,
-                    countUpdate = { c = it })
+                    viewModel= simonViewModel)
             }
             //sfrutto la variabile orientation per definire le condizioni in cui collocare la stringa di testo e i due pulsanti Cancella e Fine Partita
             // modalità Portrait -> sono centrati orizzontalmnete e spostati in basso;
@@ -114,47 +119,89 @@ fun GameScreen( onButtonClicked: (String)-> Unit){
                 //[commentato a partire dalla riga 257]
                 CreateStringButtons(
                     text = t,
-                    textUpdate = { t = it },
-                    count = c,
-                    countUpdate = { c = it },
+                    textUpdate = { simonViewModel.t  = it },
                     games = playedMatches,
                     gamesUpdate = { playedMatches = it },
-                    nextActivity = onButtonClicked
+                    nextActivity = onButtonClicked,
+                    viewModel= simonViewModel
                 )
             }
         }
-    }else{
-        Row(modifier= Modifier.fillMaxWidth()
-            .padding(10.dp),
+
+    }else {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Column(modifier=Modifier.fillMaxHeight().weight(0.5f).padding(10.dp),
-                verticalArrangement = Arrangement.Center){
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(0.5f),
+                verticalArrangement = Arrangement.Center
+            ) {
                 CreateRows(
                     text = t,
-                    textUpdated = { t = it },
+                    textUpdated = { simonViewModel.t = it },
                     oriented = orientation,
-                    counting = c,
-                    countUpdate = { c = it })
+                    viewModel = simonViewModel
+                )
             }
             Column(
-                modifier=Modifier
+                modifier = Modifier
                     .fillMaxHeight()
                     .padding(15.dp)
                     .weight(0.5f)
-            ){
-                Spacer(modifier= Modifier.height(50.dp))
+            ) {
+                Spacer(modifier = Modifier.height(50.dp))
                 CreateStringButtons(
                     text = t,
-                    textUpdate = { t = it },
-                    count = c,
-                    countUpdate = { c = it },
+                    textUpdate = { simonViewModel.t = it },
                     games = playedMatches,
                     gamesUpdate = { playedMatches = it },
-                    nextActivity = onButtonClicked)
+                    nextActivity = onButtonClicked,
+                    viewModel = simonViewModel
+                )
             }
         }
     }
+    if (simonViewModel.gameOver) {
+        Box(modifier=Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.padding(10.dp).height(200.dp).width(340.dp)
+                    .background(colorResource(R.color.light_black)),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        modifier = Modifier.padding(6.dp),
+                        text = "GAME",
+                        color = colorResource(R.color.white),
+                        style = TextStyle(
+                            fontSize = 80.sp,
+                            fontFamily = FontMatches,
+                            drawStyle = Stroke(miter = 10f, width = 6f, join = StrokeJoin.Round),
+                        )
+                    )
+                    Text(
+                        modifier = Modifier.padding(6.dp),
+                        text = "OVER",
+                        color = colorResource(R.color.white),
+                        style = TextStyle(
+                            fontSize = 80.sp,
+                            fontFamily = FontMatches,
+                            drawStyle = Stroke(miter = 10f, width = 6f, join = StrokeJoin.Round),
+                        )
+                    )
+                }
+            }
+        }
+    }
+
 }
 
 
@@ -165,23 +212,23 @@ fun GameScreen( onButtonClicked: (String)-> Unit){
 //Landscape: i bottoni sono a sinistra dello schermo (viene cambiata la struttura dei bottoni);
 //la struttura e le caratteristiche di ciascun bottone sono definite nella funzione ColoredButton
 @Composable
-fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int, counting:Int, countUpdate:(Int)->Unit){
+fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int, viewModel: SimonViewModel){
     if (oriented==Configuration.ORIENTATION_PORTRAIT){
         Column(
             horizontalAlignment =Alignment.CenterHorizontally
         ){
             Spacer(modifier=Modifier.height(50.dp))
             Row  {
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.red, char='R', countButton=counting, countChanged=countUpdate )
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.magenta, char='M', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.red, glowColor = R.color.glowRed, char='R', viewModel=viewModel )
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.magenta, glowColor = R.color.glowMagenta, char='M',  viewModel=viewModel)
             }
             Row  {
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.yellow, char='Y', countButton=counting, countChanged=countUpdate)
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.green, char='G', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.yellow, glowColor = R.color.glowYellow, char='Y', viewModel=viewModel)
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.green, glowColor = R.color.glowGreen, char='G',  viewModel=viewModel)
             }
             Row  {
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.cyan, char='C', countButton=counting, countChanged=countUpdate)
-                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.blue, char='B', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.cyan, glowColor = R.color.glowCyan, char='C', viewModel=viewModel)
+                ColoredButton(text=text, stringChanged = textUpdated , color= R.color.blue, glowColor = R.color.glowBlue, char='B',  viewModel=viewModel)
             }
         }
     }
@@ -192,20 +239,32 @@ fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int, countin
             Row (
                 modifier = Modifier.fillMaxWidth()
             ){
-                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.red, char='R', countButton=counting, countChanged=countUpdate)
-                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.magenta, char='M', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier
+                    .height(100.dp)
+                    .width(130.dp), stringChanged = textUpdated , color= R.color.red, glowColor = R.color.glowRed, char='R',  viewModel=viewModel)
+                ColoredButton(text=text,modifier=Modifier
+                    .height(100.dp)
+                    .width(130.dp), stringChanged = textUpdated , color= R.color.magenta, glowColor = R.color.glowMagenta, char='M', viewModel=viewModel)
             }
             Row(
                 modifier = Modifier.fillMaxWidth()
             ){
-                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.yellow, char='Y', countButton=counting, countChanged=countUpdate)
-                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.green, char='G', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier
+                    .height(100.dp)
+                    .width(130.dp), stringChanged = textUpdated , color= R.color.yellow, glowColor = R.color.glowYellow, char='Y',  viewModel=viewModel)
+                ColoredButton(text=text,modifier=Modifier
+                    .height(100.dp)
+                    .width(130.dp), stringChanged = textUpdated , color= R.color.green, glowColor = R.color.glowGreen, char='G',  viewModel=viewModel)
             }
             Row(
                 modifier = Modifier.fillMaxWidth()
             ){
-                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.cyan, char='C', countButton=counting, countChanged=countUpdate)
-                ColoredButton(text=text,modifier=Modifier.height(100.dp).width(130.dp), stringChanged = textUpdated , color= R.color.blue, char='B', countButton=counting, countChanged=countUpdate)
+                ColoredButton(text=text,modifier=Modifier
+                    .height(100.dp)
+                    .width(130.dp), stringChanged = textUpdated , color= R.color.cyan, glowColor = R.color.glowCyan, char='C',  viewModel=viewModel)
+                ColoredButton(text=text,modifier=Modifier
+                    .height(100.dp)
+                    .width(130.dp), stringChanged = textUpdated , color= R.color.blue, glowColor = R.color.glowBlue, char='B',  viewModel=viewModel)
             }
 
         }
@@ -221,29 +280,50 @@ fun CreateRows( text: String, textUpdated:(String)->Unit, oriented: Int, countin
 
 @Composable
 fun ColoredButton(modifier:Modifier=Modifier,
-                  char:Char, color:Int,
+                  char:Char,
+                  color:Int,
+                  glowColor:Int,
                   text:String,
                   stringChanged:(String)-> Unit,
-                  countButton:Int,
-                  countChanged:(Int)->Unit){
+                  viewModel: SimonViewModel
+){
+    val isGlowing=viewModel.buttonTurnedOn
+
+    val clicked=remember{ MutableInteractionSource() }
+    val isPressed by clicked.collectIsPressedAsState()
+    LaunchedEffect(isPressed) {
+        viewModel.buttonPressed(isPressed)
+    }
+
+    val colorButton=if ((char==isGlowing)||viewModel.pressed) glowColor else color
+
     Button(
         onClick = {
-            //al Click viene incrementato di 1 il conteggio e aggiornata la stringa di testo t
+            if (viewModel.isComputerTurn) return@Button
+            //al Click viene aggiornata la stringa di testo t
             val comma =if (text.isEmpty()) "" else ", "
             val textChanged=text+ comma+ char
-            val plusOne=countButton+1
-
             //uso delle funzioni di callback
             //stringChanged: aggiorna la variabile t
             //countChanged: aggiorna la variabile c
             stringChanged(textChanged)
-            countChanged(plusOne)
+
+            viewModel.playerTurn(char)
+
         },
-        colors = ButtonDefaults.buttonColors(containerColor=colorResource(color)),
-        modifier = modifier.padding(2.dp).width(160.dp).height(130.dp)
-            .shadow(elevation=12.dp,
-                shape=RoundedCornerShape(15.dp),
-                ambientColor = colorResource(R.color.black)),
+        enabled=!viewModel.gameOver,
+        colors = ButtonDefaults.buttonColors(
+            containerColor=colorResource(colorButton),
+            disabledContainerColor =colorResource(colorButton) ),
+        modifier = modifier
+            .padding(2.dp)
+            .width(160.dp)
+            .height(130.dp)
+            .shadow(
+                elevation = 12.dp,
+                shape = RoundedCornerShape(15.dp),
+                ambientColor = colorResource(R.color.black)
+            ),
         shape= RoundedCornerShape(15.dp)
 
     ) {}
@@ -253,11 +333,11 @@ fun ColoredButton(modifier:Modifier=Modifier,
 fun CreateStringButtons(
     text:String,
     textUpdate:(String)->Unit,
-    count:Int,
-    countUpdate:(Int)-> Unit,
     games:String,
     gamesUpdate:(String)->Unit,
-    nextActivity: (String) -> Unit){
+    nextActivity: (String) -> Unit,
+    viewModel: SimonViewModel){
+
     Column(
         modifier=Modifier.fillMaxSize(),
         horizontalAlignment=Alignment.CenterHorizontally,
@@ -268,13 +348,17 @@ fun CreateStringButtons(
             scrollState.animateScrollTo(scrollState.maxValue)
         }
         Text(
-            modifier = Modifier.width(280.dp)
+            modifier = Modifier
+                .width(280.dp)
 
                 //inserisco un modificatore per stabilire i limiti di altezza della mia barra di testo
                 .heightIn(10.dp, 100.dp)
                 //aggiungo una barra di scorrimento verticale per leggere il testo dopo che viene superato il limite massimo
                 .verticalScroll(scrollState),
-            text = text,
+            text = if(text.isEmpty() && viewModel.startMatch && !viewModel.isComputerTurn ) {
+                stringResource(R.string.turn)
+            }else{
+                text},
             color = colorResource(R.color.white),
             style = TextStyle(
                 fontSize = 25.sp,
@@ -291,18 +375,15 @@ fun CreateStringButtons(
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
-            var  buttonEnabled by remember {mutableStateOf(true)}
-
             Button(
                 onClick = {
+                    viewModel.buttonEnabled(false)
                     //questa funzionalità della classe Button,
                     //avvia al Click la partita e
-                    //StartGame()
                     // viene disattivato il pulsante successivamente
-                    buttonEnabled=false
-
+                    viewModel.startGame()
                 },
-                enabled=buttonEnabled,
+                enabled=viewModel.enabled,
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     // Quando il pulsante è attivo ha il fondo bianco e la scritta viola scuro
@@ -328,11 +409,15 @@ fun CreateStringButtons(
             Spacer(modifier = Modifier.width(10.dp))
 
             Button(
-                onClick={},
+                onClick={
+                    viewModel.buttonPausePressed()
+                },
+                enabled =viewModel.buttonPauseEnabled() ,
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     // Quando il pulsante è attivo ha il fondo bianco e la scritta viola scuro
-                    containerColor = colorResource(R.color.buttonBlue),
+                    containerColor = if (!viewModel.isPaused) {colorResource(R.color.buttonBlue)}
+                    else{colorResource(R.color.buttonRed)},
                     contentColor= colorResource(R.color.white),
                     // Quando il pulsante è disattivato ha fondo lilla e scritta bianca
                     disabledContainerColor = colorResource(R.color.light_white),
@@ -343,7 +428,10 @@ fun CreateStringButtons(
                 elevation = ButtonDefaults.buttonElevation(pressedElevation = 5.dp)
             ){
                 Text(
-                    text = stringResource(R.string.pause),
+                    text = if(!viewModel.buttonPauseEnabled()) {
+                        stringResource(R.string.pause)
+                    }else {if (!viewModel.isPaused) {stringResource(R.string.pause)}
+                    else {stringResource(R.string.resume)}},
                     style = TextStyle(
                         fontSize = 15.sp,
                         fontFamily = FontButtons
@@ -364,6 +452,7 @@ fun CreateStringButtons(
                     // se playedMatches è vuota, diventa la sequenza corrente,
                     // se playedMatches non è vuota aggiungo in coda la sequenza corrente;
                     // azzero il conteggio e la sequenza
+                    val count=text.filter { it.isLetter() }.length
                     val sequence = " $count |  " + text
                     val previousGames = if (games.isEmpty()) {
                         sequence
@@ -375,9 +464,8 @@ fun CreateStringButtons(
 
                     val empty2 = ""
                     textUpdate(empty2)
-                    val zero2 = 0
-                    countUpdate(zero2)
                 },
+                enabled=!viewModel.gameOver,
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.light_white)),
                 border = BorderStroke(1.dp, colorResource(R.color.white)),
@@ -396,7 +484,3 @@ fun CreateStringButtons(
     }
 }
 
-@Composable
-fun CreateSequenceGame(){
-
-}
