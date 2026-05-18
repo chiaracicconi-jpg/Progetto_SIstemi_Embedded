@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                         containerColor = Color.Transparent) { innerPadding ->
 
                     NavHost(
-                        navController = navController, startDestination = "matchHistory",
+                        navController = navController, startDestination = "matchHistory/{playedMatches}",
                         modifier = Modifier.padding(innerPadding)
                     ) {
 
@@ -57,8 +57,12 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("matchHistory/{playedMatches}"){backStackEntry->
+                            val playedMatches=Uri.decode(backStackEntry.arguments?.getString("playedMatches").orEmpty())
                             //Passo il parametro da gestire in MatchHistory
-                            MatchHistory(Uri.decode(backStackEntry.arguments?.getString("playedMatches").orEmpty()))
+                            MatchHistory(
+                                allMatches  =playedMatches,
+                                onPlayClicked={navController.navigate("gameScreen")}
+                            )
                         }
                     }
                 }
